@@ -26,7 +26,9 @@
         text = text.replace(/(.)\x1b[을를]/g, function () {
             return arguments[1] + pickParticle(arguments[1], "을", "를");
         }.bind(this));
-        text = text.replace(/(.)\x1bkr[\s*(.)\s*,\s*(.)\s*]/g, function () {
+        console.log(text);
+
+        text = text.replace(/(.)\x1bkr\[\s*(.*)\s*,\s*(.*)\s*\]/g, function () {
             return arguments[1] + pickParticle(arguments[1], arguments[2], arguments[3]);
         }.bind(this));
         return text;
