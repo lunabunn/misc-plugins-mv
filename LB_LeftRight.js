@@ -3,23 +3,86 @@
 //=============================================================================
 
 /*:
- * @plugindesc Fixes the diection of all character sprites (including both player characters and events) to the horizontal axis (left and right).
+ * @plugindesc Fixes the diection of character sprites to the horizontal axis (left and right).
  * @author LunaBunn
  *
- * @help This plugin does not provide plugin commands.
+ * @help Whether or not to fix the direction of an event's sprite can be
+ * specified in an event-by-event manner by inputting either <leftright: true>
+ * or <leftright: false> in the Note box of an event. This takes priority over
+ * the "Enable for events" plugin parameter. Further, any value other than true
+ * (active) and false (deactivate) are ignored.
+ * 
+ * @param players
+ * @text Enable for players
+ * @desc Enabled/Disables fixing the direction of player sprites to the horizontal axis.
+ * @type boolean
+ * @default true
+ * 
+ * @param events
+ * @text Enable for events
+ * @desc Enabled/Disables fixing the direction of event sprites to the horizontal axis BY DEFAULT.
+ * @type boolean
+ * @default true
  */
 
 /*:ko
- * @plugindesc 플레이어와 이벤트를 포함한 캐릭터들의 스프라이트 방향을 왼쪽과 오른쪽으로 고정시켜주는 플러그인입니다.
+ * @plugindesc 캐릭터들의 스프라이트 방향을 왼쪽과 오른쪽으로 고정시켜주는 플러그인입니다.
  * @author LunaBunn
  *
- * @help 본 플러그인은 플러그인 커맨드를 포함하고 있지 않습니다.
+ * @help 이벤트의 노트 항목에 <leftright: true> 혹은 <leftright: false>를
+ * 입력하심으로써 스프라이트 고정 여부를 이벤트별로 설정하실 수 있습니다.
+ * 이와 같이 고정 여부를 설정하실 경우, '이벤트들에게 사용' 플러그인
+ * 파라미터의 값과 관계 없이 적용됩니다. 또한, true (활성화) 와
+ * false (비활성화) 이외의 값은 무시됩니다.
+ * 
+ * @param players
+ * @text 플레이어에게 사용
+ * @desc 스프라이트 고정 기능을 플레이어에게 사용할지 여부
+ *
+ * @param events
+ * @text 이벤트들에게 사용
+ * @desc 스프라이트 고정 기능을 이벤트들에게 사용할지 여부 (기본값)
  */
 
-Sprite_Character.prototype.characterPatternY = function () {
-    this._direction = this._direction || 6;
-    if (this._character._direction == 4 || this._character._direction == 6) {
-        this._direction = this._character._direction;
-    }
-    return (this._direction - 2) / 2;
-};
+{
+    const params = PluginManager.parameters("LB_LeftRight");
+
+    const initialize = Sprite_Character.prototype.initialize;
+    Sprite_Character.prototype.initialize = function(character) {
+        initialize.call(this, character);
+        this._direction = 6;
+    };
+
+    const regTrue = /<\s*leftright\s*:\s*true\s*>/;
+    const regFalse = /<\s*leftright\s*:\s*false\s*>/;
+    const setCharacter = Sprite_Character.prototype.setCharacter;
+    Sprite_Character.prototype.setCharacter = function (character) {
+        setCharacter.call(this, character);
+        if (character instanceof Game_Player) {
+            this.leftRight = params["players"] == "true";
+        } else if (character instanceof Game_Event) {
+            let note = character.event().note;
+            if (note) {
+                if (regTrue.test(note)) {
+                    this.leftRight = true;
+                } else if (regFalse.test(note)) {
+                    this.leftRight = false;
+                } else {
+                    this.leftRight = params["events"] == "true";
+                }
+            } else {
+                this.leftRight = params["events"] == "true";
+            }
+        }
+    };
+
+    Sprite_Character.prototype.characterPatternY = function () {
+        if (!this.leftRight) {
+            return (this._character._direction - 2) / 2;
+        }
+        if (this._character._direction == 4 || this._character._direction == 6) {
+            this._direction = this._character._direction;
+        }
+        return (this._direction - 2) / 2;
+    };
+}
