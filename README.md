@@ -1,7 +1,7 @@
 English [한국어](README_KO.md) [日本語 (現在未翻訳)](*)
 
 # misc-plugins-mv
-A miscellaneaous collection of RPG Maker MV plugins. 
+A miscellaneous collection of RPG Maker MV plugins. 
 
 Plugins contained in this repository are distributed under the zlib license and, subject to the terms of the license, may be modified, redistributed, and used freely.
 
