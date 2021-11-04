@@ -1,3 +1,5 @@
+[English](README.md) 한국어 [日本語 (現在未翻訳)](*)
+
 # misc-plugins-mv
 잡다한 MV 플러그인들을 모아 놓은 저장소입니다.
 
