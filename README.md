@@ -14,6 +14,7 @@ For more details, please refer to the license notice included in the plugin file
 
 This repository currently contains the following plugins:
 - LB_Font - A dead-simple font changer plugin.
+- LB_HangulTypingAnimation - (Korean Only) Implements a typing animation for Korean text in the message window.
 - LB_JumpHeight - Lets you control the height and speed of jumps.
 - LB_KrAutoParticles - (Korean Only) Displays the correct Korean particle based on the preceding syllable. 
 - LB_LeftRight - Fixes the diection of character sprites to the horizontal axis (left and right).
