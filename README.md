@@ -1,4 +1,4 @@
-[한국어](README_KO.md) English [日本語 (現在未翻訳)](*)
+English [한국어](README_KO.md) [日本語 (現在未翻訳)](*)
 
 # misc-plugins-mv
 A miscellaneous collection of RPG Maker MV plugins. 
